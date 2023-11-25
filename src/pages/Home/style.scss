@@ -1,0 +1,22 @@
+.container-home {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0 43px;
+
+  .right-home {
+    width: 65%;
+
+    @media screen and (max-width: 1280px) {
+      width: 100%;
+    }
+  }
+
+  .left-home {
+    width: 33%;
+
+    @media screen and (max-width: 1280px) {
+      width: 100%;
+    }
+  }
+}

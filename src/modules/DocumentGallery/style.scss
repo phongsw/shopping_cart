@@ -1,0 +1,42 @@
+.cover-document-gallery {
+  margin-top: 24px;
+
+  .detail-document-list {
+    display: flex;
+    flex-wrap: wrap;
+
+    .document {
+      width: 50%;
+      margin-bottom: 22px;
+
+      h3 {
+        margin-bottom: 22px;
+        font-size: 16px;
+        color: #444;
+      }
+    }
+  }
+
+
+
+
+
+  .main-document-gallery {
+
+    li {
+      margin-bottom: 22px;
+
+      a {
+        display: flex;
+        align-items: center;
+
+        span {
+          display: inline-block;
+          font-size: 14px;
+          color: #27313C;
+          padding-left: 17px;
+        }
+      }
+    }
+  }
+}

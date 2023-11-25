@@ -1,0 +1,88 @@
+.events-list {
+  margin-top: 22px;
+
+  .content-events {
+    display: flex;
+    flex-wrap: wrap;
+
+    @media screen and (max-width: 1280px) {
+      justify-content: space-between;
+    }
+
+    li {
+      display: flex;
+      margin-bottom: 8px;
+
+      @media screen and (max-width: 1280px) {
+        width: 49%;
+      }
+
+      @media screen and (max-width: 768px) {
+        width: 100%;
+      }
+
+      .left-date {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        flex-wrap: wrap;
+        width: 80px;
+        height: 80px;
+        border: 3px solid #4AC49A;
+
+        .date {
+          display: block;
+          width: 100%;
+          text-align: center;
+          padding-bottom: 4px;
+          font-size: 26px;
+          font-weight: bold;
+          color: #4AC49A;
+        }
+
+        .month {
+          font-size: 16px;
+          color: #4AC49A;
+        }
+      }
+
+      .event-content {
+        width: 327px;
+        height: 80px;
+        margin-left: 8px;
+        padding-left: 16px;
+        padding-top: 14px;
+        background: #D6F3E9;
+
+        @media screen and (max-width: 1280px) {
+          width: 90%;
+        }
+
+        h3 {
+          font-size: 16px;
+          font-weight: bold;
+          color: #333;
+          padding-bottom: 12px;
+        }
+
+        span {
+          padding-left: 23px;
+          font-size: 14px;
+          color: #444;
+          position: relative;
+
+          &::before {
+            content: '';
+            display: block;
+            width: 16px;
+            height: 16px;
+            background-image: url('../../assets/img/clock.png');
+            position: absolute;
+            left: 0;
+            top: 2px;
+          }
+        }
+      }
+    }
+  }
+}
