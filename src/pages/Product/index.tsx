@@ -1,3 +1,4 @@
+import ShoppingCart from '@/modules/ShoppingCart';
 import ProductCard from './ProductCard';
 
 const ProductList = () => {
@@ -17,6 +18,7 @@ const ProductList = () => {
           <ProductCard />
         </li>
       </ul>
+      <ShoppingCart />
     </div>
   );
 };
