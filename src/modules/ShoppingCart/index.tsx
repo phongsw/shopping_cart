@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import XMarkIcon from '@/assets/img/close.svg'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { IProductItem } from '@/types/product';
 import CartItem from './CartItem';
+import { addToCart } from '@/features/cartSlice';
 
 interface cartProps {
   toggleCart?: () => void
@@ -14,21 +15,21 @@ const calculateTotalPrice = (products: IProductItem[]): number => {
 }
 
 export default function ShoppingCart({toggleCart}: cartProps) {
-  const products = useSelector((state: RootState) => state.shoppingCart.productList)
+  const dispatch = useDispatch()
+  const products = useSelector((state: RootState) => state.cartList.items)
   const totalState = useSelector((state: RootState) => state.totalPrice.totalPrice)
-  const [productList, setProductList] = useState(products)
   const [totalPrice, setTotalPrice] = useState(totalState)
-  console.log('totalPrice', totalPrice)
 
   const handleQuantityChange = (id: number, quantity: number) => {
     if (quantity === 0) {
       handleRemoveFromCart(id)
     }
     if (id && quantity) {
-      const updatedCart = productList.map((product) =>
+      const updatedCart = products.map((product) =>
         product.id === id ? { ...product, quantity } : product
       )
-      setProductList(updatedCart)
+      // setProductList(updatedCart)
+      dispatch(addToCart(updatedCart))
 
       const newTotalPrice = calculateTotalPrice(updatedCart)
       setTotalPrice(newTotalPrice)
@@ -36,8 +37,9 @@ export default function ShoppingCart({toggleCart}: cartProps) {
   }
 
   const handleRemoveFromCart = (id: number) => {
-    const updatedCart = productList.filter((product) => product.id !== id)
-    setProductList(updatedCart)
+    const updatedCart = products.filter((product) => product.id !== id)
+    // setProductList(updatedCart)
+    dispatch(addToCart(updatedCart))
 
     const newTotalPrice = calculateTotalPrice(updatedCart)
     setTotalPrice(newTotalPrice)
@@ -49,10 +51,11 @@ export default function ShoppingCart({toggleCart}: cartProps) {
       return
     }
     if (id) {
-      const updatedCart = productList.map((product) =>
+      const updatedCart = products.map((product) =>
         product.id === id ? { ...product, quantity: +newValue } : product
       )
-      setProductList(updatedCart)
+      // setProductList(updatedCart)
+      dispatch(addToCart(updatedCart))
 
       const newTotalPrice = calculateTotalPrice(updatedCart)
       setTotalPrice(newTotalPrice)
@@ -82,7 +85,7 @@ export default function ShoppingCart({toggleCart}: cartProps) {
               <div className='mt-8'>
                 <div className='flow-root'>
                   <ul role='list' className='-my-6'>
-                    {productList?.map((product: IProductItem) => (
+                    {products?.map((product: IProductItem) => (
                       <CartItem
                         key={product.id}
                         product={product}

@@ -14,6 +14,7 @@ const ProductCard = ({ id, images, title, price, description, handleAddToCart  }
     handleAddToCart({
       id: id,
       title: title,
+      images: images,
       description: description,
       price: price,
       quantity: 1
