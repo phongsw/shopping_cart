@@ -1,23 +1,16 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
+import shoppingCartReducer from './features/shoppingCartSlice';
+import totalPriceReducer from './features/totalPriceSlice';
+import cartReducer from './features/cartSlice';
 
-const initialState = { value: { username: '' } };
-const userSlice = createSlice({
-  name: 'user',
-  initialState,
-  reducers: {
-    login: (state, action) => {
-      state.value = action.payload;
-    },
-
-    logout: (state) => {
-      state = initialState;
-    },
-  },
-});
-
-export const { login, logout } = userSlice.actions;
 export const store = configureStore({
   reducer: {
-    user: userSlice.reducer,
+    shoppingCart: shoppingCartReducer,
+    totalPrice: totalPriceReducer,
+    cartList: cartReducer
   },
 });
+
+export type RootState = ReturnType<typeof store.getState>
+
+export type AppDispatch = typeof store.dispatch
