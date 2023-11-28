@@ -7,10 +7,9 @@ interface Props {
   product: IProductItem
   quantityChange: (id: number, quantity: number) => void
   removeCart: (id: number) => void
-  handleQuantityChangeInput: (id: number, quantity: number) => void
 }
 
-const CartItem = ({ product, quantityChange, removeCart, handleQuantityChangeInput }: Props) => {
+const CartItem = ({ product, quantityChange, removeCart }: Props) => {
   return (
     <li key={product.id} className='flex flex-col gap-5 py-6'>
       <div className='flex gap-4'>
@@ -35,13 +34,7 @@ const CartItem = ({ product, quantityChange, removeCart, handleQuantityChangeInp
           >
             <img src={MinusIcon} alt="minus icons" />
           </button>
-          <input
-            className='w-16 appearance-none py-[5px] text-center text-lg outline-none only-input'
-            type='text'
-            value={product.quantity}
-            onChange={(e) => handleQuantityChangeInput(product.id, e.target.value as any)}
-            placeholder="0"
-          />
+          <span className="text-xl">{product.quantity}</span>
           <button
             className='cursor-pointer rounded-lg p-3 duration-100 hover:bg-blue-500'
             onClick={() => quantityChange(product.id, product.quantity + 1)}

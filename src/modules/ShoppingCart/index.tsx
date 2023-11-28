@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
 import XMarkIcon from '@/assets/img/close.svg'
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
+import { RootState } from '@/store/store';
 import { IProductItem } from '@/types/product';
 import CartItem from './CartItem';
-import { removeFromCart, updateCart } from '@/features/cartSlice';
-import { handleQuantityChangeInputRedux, setTotalPrice } from '@/features/totalPriceSlice';
+import { removeFromCart, updateCart } from '@/store/cartSlice';
+import { setTotalPrice } from '@/store/totalPriceSlice';
 import { calculateTotalPrice } from '@/utils/helper';
 import { Link } from 'react-router-dom';
 import { ROUTER } from '@/constants/path';
@@ -20,6 +20,7 @@ export default function ShoppingCart({toggleCart}: cartProps) {
   const products = useSelector((state: RootState) => state.cartList.items)
   const totalState = useSelector((state: RootState) => state.totalPrice.totalPrice)
 
+  // init totalPrice when add to product
   useEffect(() => {
     const newTotalPrice = calculateTotalPrice(products);
     dispatch(setTotalPrice(newTotalPrice));
@@ -46,26 +47,6 @@ export default function ShoppingCart({toggleCart}: cartProps) {
     const newTotalPrice = calculateTotalPrice(updatedCart);
     dispatch(setTotalPrice(newTotalPrice))
   };
-
-  const handleQuantityChangeInput = (id: number, quantity: any) => {
-    const newValue = quantity.replace(/[^0-9]/g, '')
-    if (+newValue >= 999999) {
-      return
-    }
-    if (id) {
-      const updatedCart = products.map((product) =>
-        product.id === id ? { ...product, quantity: +newValue } : product
-      )
-
-      dispatch(handleQuantityChangeInputRedux({ id, quantity: +newValue, cartList: products }));
-      // setProductList(updatedCart)
-      // dispatch(addToCart(updatedCart))
-
-      const newTotalPrice = calculateTotalPrice(updatedCart)
-      dispatch(setTotalPrice(newTotalPrice))
-    }
-  }
-
 
   return (
     <>
@@ -95,7 +76,6 @@ export default function ShoppingCart({toggleCart}: cartProps) {
                         product={product}
                         quantityChange={handleQuantityChange}
                         removeCart={handleRemoveFromCart}
-                        handleQuantityChangeInput={handleQuantityChangeInput}
                       />
                     ))}
                   </ul>
@@ -108,7 +88,6 @@ export default function ShoppingCart({toggleCart}: cartProps) {
                 <p>${totalState}</p>
               </div>
               <div className='mt-6 click-buy'>
-              {/* <div className='mt-6' onClick={handleClickBuy}> */}
                 <Link to={ROUTER.CHECKOUT_PAGE} className='flex cursor-pointer items-center justify-center rounded-md border border-transparent bg-black px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700'>
                   Proceed to payment
                 </Link>

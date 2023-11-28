@@ -1,12 +1,12 @@
 import { useDispatch } from 'react-redux'
 import ProductCard from './ProductCard';
 import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
+import { RootState } from '@/store/store';
 import ShoppingCart from '@/modules/ShoppingCart';
 import { useState } from 'react';
 import ShoppingCartIcon from '@/assets/img/shopping-cart.png';
 import { IProductItem } from '@/types/product';
-import { addToCart } from '@/features/cartSlice';
+import { addToCart } from '@/store/cartSlice';
 
 const ProductList = () => {
   const dispatch = useDispatch()
