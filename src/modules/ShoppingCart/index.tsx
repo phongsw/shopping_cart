@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { IProductItem } from '@/types/product';
 import CartItem from './CartItem';
-import { addToCart } from '@/features/cartSlice';
+import { addToCart, removeFromCart, updateCart } from '@/features/cartSlice';
 
 interface cartProps {
   toggleCart?: () => void
@@ -22,28 +22,25 @@ export default function ShoppingCart({toggleCart}: cartProps) {
 
   const handleQuantityChange = (id: number, quantity: number) => {
     if (quantity === 0) {
-      handleRemoveFromCart(id)
-    }
-    if (id && quantity) {
+      dispatch(removeFromCart(id));
+    } else if (id && quantity) {
       const updatedCart = products.map((product) =>
         product.id === id ? { ...product, quantity } : product
-      )
-      // setProductList(updatedCart)
-      dispatch(addToCart(updatedCart))
-
-      const newTotalPrice = calculateTotalPrice(updatedCart)
-      setTotalPrice(newTotalPrice)
+      );
+      dispatch(updateCart(updatedCart));
+  
+      const newTotalPrice = calculateTotalPrice(updatedCart);
+      setTotalPrice(newTotalPrice);
     }
-  }
-
+  };
+  
   const handleRemoveFromCart = (id: number) => {
-    const updatedCart = products.filter((product) => product.id !== id)
-    // setProductList(updatedCart)
-    dispatch(addToCart(updatedCart))
-
-    const newTotalPrice = calculateTotalPrice(updatedCart)
-    setTotalPrice(newTotalPrice)
-  }
+    const updatedCart = products.filter((product) => product.id !== id);
+    dispatch(updateCart(updatedCart));
+  
+    const newTotalPrice = calculateTotalPrice(updatedCart);
+    setTotalPrice(newTotalPrice);
+  };
 
   const handleQuantityChangeInput = (id: number, quantity: any) => {
     const newValue = quantity.replace(/[^0-9]/g, '')
