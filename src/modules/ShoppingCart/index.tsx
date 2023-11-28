@@ -47,7 +47,7 @@ export default function ShoppingCart({toggleCart}: cartProps) {
     dispatch(setTotalPrice(newTotalPrice))
   };
 
-  const handleQuantityChangeInput = (id: number, quantity: number) => {
+  const handleQuantityChangeInput = (id: number, quantity: any) => {
     const newValue = quantity.replace(/[^0-9]/g, '')
     if (+newValue >= 999999) {
       return
