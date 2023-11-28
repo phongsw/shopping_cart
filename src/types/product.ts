@@ -1,9 +1,15 @@
+interface ICategory {
+  id: number;
+  name: string;
+  image: string;
+}
+
 export interface IProductItem {
   id: number
   title?: string
   description?: string
-  price?: any
-  category?: any
+  price: number
+  category?: ICategory
   images?: string
-  quantity?: any
+  quantity: number
 }

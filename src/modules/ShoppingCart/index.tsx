@@ -1,25 +1,30 @@
-import { useState } from 'react'
+import { useEffect } from 'react'
 import XMarkIcon from '@/assets/img/close.svg'
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { IProductItem } from '@/types/product';
 import CartItem from './CartItem';
-import { addToCart, removeFromCart, updateCart } from '@/features/cartSlice';
+import { removeFromCart, updateCart } from '@/features/cartSlice';
+import { handleQuantityChangeInputRedux, setTotalPrice } from '@/features/totalPriceSlice';
+import { calculateTotalPrice } from '@/utils/helper';
+import { Link } from 'react-router-dom';
+import { ROUTER } from '@/constants/path';
 
 interface cartProps {
   toggleCart?: () => void
 }
 
-const calculateTotalPrice = (products: IProductItem[]): number => {
-  return products.reduce((total, product) => total + product.price * product.quantity, 0)
-}
 
 export default function ShoppingCart({toggleCart}: cartProps) {
   const dispatch = useDispatch()
   const products = useSelector((state: RootState) => state.cartList.items)
   const totalState = useSelector((state: RootState) => state.totalPrice.totalPrice)
-  const [totalPrice, setTotalPrice] = useState(totalState)
 
+  useEffect(() => {
+    const newTotalPrice = calculateTotalPrice(products);
+    dispatch(setTotalPrice(newTotalPrice));
+  }, [products]);
+  
   const handleQuantityChange = (id: number, quantity: number) => {
     if (quantity === 0) {
       dispatch(removeFromCart(id));
@@ -30,7 +35,7 @@ export default function ShoppingCart({toggleCart}: cartProps) {
       dispatch(updateCart(updatedCart));
   
       const newTotalPrice = calculateTotalPrice(updatedCart);
-      setTotalPrice(newTotalPrice);
+      dispatch(setTotalPrice(newTotalPrice))
     }
   };
   
@@ -39,10 +44,10 @@ export default function ShoppingCart({toggleCart}: cartProps) {
     dispatch(updateCart(updatedCart));
   
     const newTotalPrice = calculateTotalPrice(updatedCart);
-    setTotalPrice(newTotalPrice);
+    dispatch(setTotalPrice(newTotalPrice))
   };
 
-  const handleQuantityChangeInput = (id: number, quantity: any) => {
+  const handleQuantityChangeInput = (id: number, quantity: number) => {
     const newValue = quantity.replace(/[^0-9]/g, '')
     if (+newValue >= 999999) {
       return
@@ -51,11 +56,13 @@ export default function ShoppingCart({toggleCart}: cartProps) {
       const updatedCart = products.map((product) =>
         product.id === id ? { ...product, quantity: +newValue } : product
       )
+
+      dispatch(handleQuantityChangeInputRedux({ id, quantity: +newValue, cartList: products }));
       // setProductList(updatedCart)
-      dispatch(addToCart(updatedCart))
+      // dispatch(addToCart(updatedCart))
 
       const newTotalPrice = calculateTotalPrice(updatedCart)
-      setTotalPrice(newTotalPrice)
+      dispatch(setTotalPrice(newTotalPrice))
     }
   }
 
@@ -98,13 +105,13 @@ export default function ShoppingCart({toggleCart}: cartProps) {
             <div className='px-4 py-6 sm:px-6'>
               <div className='flex justify-between text-base font-medium text-gray-900'>
                 <p>Subtotal</p>
-                <p>${totalPrice}</p>
+                <p>${totalState}</p>
               </div>
               <div className='mt-6 click-buy'>
               {/* <div className='mt-6' onClick={handleClickBuy}> */}
-                <p className='flex cursor-pointer items-center justify-center rounded-md border border-transparent bg-black px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700'>
+                <Link to={ROUTER.CHECKOUT_PAGE} className='flex cursor-pointer items-center justify-center rounded-md border border-transparent bg-black px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700'>
                   Proceed to payment
-                </p>
+                </Link>
               </div>
             </div>
           </div>
